@@ -19,7 +19,7 @@ class PrototypesController < ApplicationController
   def edit
     @prototype = Prototype.find(params[:id])
     unless @prototype.user == current_user
-      redirect_to root_path, alert: "You are not authorized to perform this action."
+      redirect_to root_path
     end
   end
 
@@ -31,7 +31,7 @@ class PrototypesController < ApplicationController
       redirect_to prototype_path(@prototype)
     else
       # 更新が失敗した場合、編集画面を再描画する
-      render :edit
+      render :edit, status: :unprocessable_entity
     end
   end
   
@@ -48,7 +48,7 @@ class PrototypesController < ApplicationController
   if @prototype.save
     redirect_to root_path
   else
-    render 'new'
+    render :new, status: :unprocessable_entity
   end
 end 
 
